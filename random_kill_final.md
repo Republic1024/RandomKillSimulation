@@ -155,7 +155,10 @@ last_killed_counts = pd.DataFrame({
     'win_count':
     pd.DataFrame(np.concatenate((a, b))).value_counts().sort_index().values - 1
 })
-last_killed_counts.plot(x='id', y='win_count', figsize=(12, 5))
+last_killed_counts.plot(x='id',
+                        y='win_count',
+                        figsize=(13, 6),
+                        title=f"Each id win counts: {N} turns for {num_people} people kill simulation")
 last_killed_counts
 ```
 
@@ -193,7 +196,7 @@ last_killed_counts
     <tr>
       <th>1</th>
       <td>2</td>
-      <td>0</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>2</th>
@@ -315,14 +318,9 @@ last_killed_counts.sort_values('win_count',ascending=False)
       <td>...</td>
     </tr>
     <tr>
-      <th>2</th>
-      <td>3</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2</td>
-      <td>0</td>
+      <th>9</th>
+      <td>10</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>5</th>
@@ -332,6 +330,11 @@ last_killed_counts.sort_values('win_count',ascending=False)
     <tr>
       <th>6</th>
       <td>7</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
       <td>0</td>
     </tr>
     <tr>
@@ -443,13 +446,19 @@ df_simul[['id', 'average_alive_turns']].sort_values(by='average_alive_turns',
 
 
 ```python
-df_simul[['id', 'average_alive_turns']].plot(x='id',y='average_alive_turns',figsize=(12,5))
+df_simul[['id', 'average_alive_turns']].plot(
+    x='id',
+    y='average_alive_turns',
+    figsize=(13, 6),
+    title=
+    f"Each id average survival turns: {N} turns for {num_people} people kill simulation"
+)
 ```
 
 
 
 
-    <AxesSubplot:xlabel='id'>
+    <AxesSubplot:title={'center':'Each id average survival turns: 35000 turns for 600 people kill simulation'}, xlabel='id'>
 
 
 
@@ -465,7 +474,7 @@ df_simul[['id', 'average_alive_turns']].plot(x='id',y='average_alive_turns',figs
 ```
 
     [NbConvertApp] Converting notebook random_kill_final.ipynb to html
-    [NbConvertApp] Writing 419462 bytes to random_kill_final.html
+    [NbConvertApp] Writing 462853 bytes to random_kill_final.html
 
 
 
