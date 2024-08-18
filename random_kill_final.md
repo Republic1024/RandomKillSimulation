@@ -42,7 +42,7 @@ random.randrange(1, z + 1, 2)
 
 
 
-    3
+    9
 
 
 
@@ -96,27 +96,9 @@ def run_simulation_numpy(num_people):
     return killed_turn
 
 
-# def run_simulation_numpy(num_people):
-#     ids = np.arange(1, num_people + 1)
-#     killed_turn = np.full(num_people, -1)
-
-#     for turn in range(num_people):
-#         alive_mask = killed_turn == -1
-#         alive_ids = ids[alive_mask]
-
-#         if alive_ids.size == 0:
-#             break
-
-#         kill_index = np.random.choice(np.arange(
-#             len(alive_ids))[::2])  # 随机选择奇数索引
-#         killed_turn[alive_mask][kill_index] = turn + 1
-
-#     return killed_turn
-
-
 #
 num_people = 600
-N = 35000
+N = 50000
 df_simul = pd.DataFrame({"id": range(1, 1 + num_people)})
 for i in tqdm_notebook(range(N)):
     result_df = run_simulation_numpy(num_people)
@@ -125,7 +107,7 @@ for i in tqdm_notebook(range(N)):
 ```
 
 
-      0%|          | 0/35000 [00:00<?, ?it/s]
+      0%|          | 0/50000 [00:00<?, ?it/s]
 
 
 
@@ -196,7 +178,7 @@ last_killed_counts
     <tr>
       <th>1</th>
       <td>2</td>
-      <td>1</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>2</th>
@@ -211,7 +193,7 @@ last_killed_counts
     <tr>
       <th>4</th>
       <td>5</td>
-      <td>1</td>
+      <td>2</td>
     </tr>
     <tr>
       <th>...</th>
@@ -221,27 +203,27 @@ last_killed_counts
     <tr>
       <th>595</th>
       <td>596</td>
-      <td>129</td>
+      <td>155</td>
     </tr>
     <tr>
       <th>596</th>
       <td>597</td>
-      <td>132</td>
+      <td>183</td>
     </tr>
     <tr>
       <th>597</th>
       <td>598</td>
-      <td>112</td>
+      <td>156</td>
     </tr>
     <tr>
       <th>598</th>
       <td>599</td>
-      <td>93</td>
+      <td>171</td>
     </tr>
     <tr>
       <th>599</th>
       <td>600</td>
-      <td>122</td>
+      <td>164</td>
     </tr>
   </tbody>
 </table>
@@ -288,29 +270,29 @@ last_killed_counts.sort_values('win_count',ascending=False)
   </thead>
   <tbody>
     <tr>
-      <th>590</th>
-      <td>591</td>
-      <td>134</td>
+      <th>578</th>
+      <td>579</td>
+      <td>192</td>
+    </tr>
+    <tr>
+      <th>574</th>
+      <td>575</td>
+      <td>188</td>
     </tr>
     <tr>
       <th>596</th>
       <td>597</td>
-      <td>132</td>
+      <td>183</td>
     </tr>
     <tr>
-      <th>586</th>
-      <td>587</td>
-      <td>131</td>
+      <th>569</th>
+      <td>570</td>
+      <td>179</td>
     </tr>
     <tr>
-      <th>575</th>
-      <td>576</td>
-      <td>130</td>
-    </tr>
-    <tr>
-      <th>595</th>
-      <td>596</td>
-      <td>129</td>
+      <th>543</th>
+      <td>544</td>
+      <td>176</td>
     </tr>
     <tr>
       <th>...</th>
@@ -318,18 +300,18 @@ last_killed_counts.sort_values('win_count',ascending=False)
       <td>...</td>
     </tr>
     <tr>
-      <th>9</th>
-      <td>10</td>
+      <th>8</th>
+      <td>9</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>5</th>
-      <td>6</td>
-      <td>0</td>
+      <th>3</th>
+      <td>4</td>
+      <td>1</td>
     </tr>
     <tr>
-      <th>6</th>
-      <td>7</td>
+      <th>1</th>
+      <td>2</td>
       <td>0</td>
     </tr>
     <tr>
@@ -385,27 +367,27 @@ df_simul[['id', 'average_alive_turns']].sort_values(by='average_alive_turns',
     <tr>
       <th>1</th>
       <td>2</td>
-      <td>334.467130</td>
+      <td>333.847563</td>
     </tr>
     <tr>
       <th>3</th>
       <td>4</td>
-      <td>322.646724</td>
+      <td>323.595568</td>
     </tr>
     <tr>
       <th>5</th>
       <td>6</td>
-      <td>317.611154</td>
+      <td>317.463111</td>
     </tr>
     <tr>
       <th>7</th>
       <td>8</td>
-      <td>314.787520</td>
+      <td>313.799384</td>
     </tr>
     <tr>
-      <th>11</th>
-      <td>12</td>
-      <td>311.955944</td>
+      <th>9</th>
+      <td>10</td>
+      <td>312.460991</td>
     </tr>
     <tr>
       <th>...</th>
@@ -415,27 +397,27 @@ df_simul[['id', 'average_alive_turns']].sort_values(by='average_alive_turns',
     <tr>
       <th>8</th>
       <td>9</td>
-      <td>282.373104</td>
+      <td>284.113218</td>
     </tr>
     <tr>
       <th>6</th>
       <td>7</td>
-      <td>277.798920</td>
+      <td>279.048939</td>
     </tr>
     <tr>
       <th>4</th>
       <td>5</td>
-      <td>270.733722</td>
+      <td>270.638427</td>
     </tr>
     <tr>
       <th>2</th>
       <td>3</td>
-      <td>254.239850</td>
+      <td>253.819704</td>
     </tr>
     <tr>
       <th>0</th>
       <td>1</td>
-      <td>200.279935</td>
+      <td>200.390112</td>
     </tr>
   </tbody>
 </table>
@@ -458,7 +440,7 @@ df_simul[['id', 'average_alive_turns']].plot(
 
 
 
-    <AxesSubplot:title={'center':'Each id average survival turns: 35000 turns for 600 people kill simulation'}, xlabel='id'>
+    <AxesSubplot:title={'center':'Each id average survival turns: 50000 turns for 600 people kill simulation'}, xlabel='id'>
 
 
 
@@ -470,11 +452,17 @@ df_simul[['id', 'average_alive_turns']].plot(
 
 
 ```python
+# df_simul.to_csv(f"./result/simul_{N}turns_{num_people}_people.csv",
+#                 index=False)
+```
+
+
+```python
 !jupyter nbconvert --to html random_kill_final.ipynb
 ```
 
     [NbConvertApp] Converting notebook random_kill_final.ipynb to html
-    [NbConvertApp] Writing 462853 bytes to random_kill_final.html
+    [NbConvertApp] Writing 455311 bytes to random_kill_final.html
 
 
 
