@@ -36,7 +36,7 @@ def run_simulation_numpy(num_people):
 
 # 模拟参数
 num_people = 600
-N = 200000
+N = 1000000
 
 # 初始化DataFrame
 df_simul = pd.DataFrame({"id": range(1, 1 + num_people)})
@@ -73,7 +73,7 @@ last_killed_counts.plot(
     f"Each id win counts: {N} turns for {num_people} people kill simulation")
 
 plt.savefig(
-    f"./result/Each id win counts: {N} turns for {num_people} people kill simulation.svg"
+    f"./result/{N}_turns_{num_people}_people_win_counts.jpg"
 )
 last_killed_counts.to_csv("./result/stats/each_ids_win_counts.csv",
                           index=False)
@@ -92,5 +92,5 @@ df_simul[['id', 'average_alive_turns']].plot(
     f"Each id average survival turns: {N} turns for {num_people} people kill simulation"
 )
 plt.savefig(
-    f"./result/Each id average survival turns: {N} turns for {num_people} people kill simulation.svg"
+    f"./result/{N}_turns_{num_people}_avg_survival_turns.jpg"
 )
