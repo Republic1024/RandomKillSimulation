@@ -61,160 +61,45 @@ def run_simulation_numpy(num_people):
 
     # 初始化 NumPy 数组
     ids = np.arange(1, num_people + 1)
-    status = np.ones(num_people, dtype=int)  # 1表示存活
     killed_turn = np.full(num_people, -1)  # 初始化淘汰回合
+    turn_num = num_people
 
-    for turn in range(num_people):
-        alive_ids = ids[status == 1]  # 获取当前存活的ID
+    for turn in range(turn_num):
+        alive_ids = ids[killed_turn == -1]  # 获取当前存活的ID
         if len(alive_ids) == 0:  # 如果没有存活者，提前退出循环
             break
 
         kill_id = random_kill_list(alive_ids) - 1  # 选择要淘汰的ID
 
-        status[kill_id] = 0  # 标记为淘汰
         killed_turn[kill_id] = turn + 1  # 记录淘汰回合
 
-    # 转换为 DataFrame
-    df = pd.DataFrame({
-        "id": ids,
-        "status": status,
-        "killed_turn": killed_turn
-    })
-
-    return df
-
+    return killed_turn
 
 #
-num_people = 100
-N = 10000
+num_people = 600
+N = 5000
 df_simul = pd.DataFrame({"id": range(1, 1 + num_people)})
 for i in tqdm_notebook(range(N)):
     result_df = run_simulation_numpy(num_people)
-    df_simul[f'turn_{i}'] = result_df['killed_turn']
+    df_simul[f'turn_{i}'] = result_df
 
-result_df
 ```
 
 
-      0%|          | 0/10000 [00:00<?, ?it/s]
-
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>id</th>
-      <th>status</th>
-      <th>killed_turn</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1</td>
-      <td>0</td>
-      <td>17</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2</td>
-      <td>0</td>
-      <td>23</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3</td>
-      <td>0</td>
-      <td>13</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>4</td>
-      <td>0</td>
-      <td>36</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>5</td>
-      <td>0</td>
-      <td>47</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>95</th>
-      <td>96</td>
-      <td>0</td>
-      <td>90</td>
-    </tr>
-    <tr>
-      <th>96</th>
-      <td>97</td>
-      <td>0</td>
-      <td>84</td>
-    </tr>
-    <tr>
-      <th>97</th>
-      <td>98</td>
-      <td>0</td>
-      <td>58</td>
-    </tr>
-    <tr>
-      <th>98</th>
-      <td>99</td>
-      <td>0</td>
-      <td>40</td>
-    </tr>
-    <tr>
-      <th>99</th>
-      <td>100</td>
-      <td>0</td>
-      <td>20</td>
-    </tr>
-  </tbody>
-</table>
-<p>100 rows × 3 columns</p>
-</div>
-
+      0%|          | 0/5000 [00:00<?, ?it/s]
 
 
 
 ```python
-# df_heatmap = df_simul.iloc[df_simul.iloc[:, 1:].idxmax()]
-# sns.heatmap(df_heatmap.iloc[:, 1:].iloc[::1000, ::1000])
+df_simul.min().iloc[:-1].sum()
 ```
 
 
-```python
-# >>> df = pd.DataFrame(columns=["City", "Temp (c)", "Rain (mm)", "Wind (m/s)"],
-# ...                   data=[["Stockholm", 21.6, 5.0, 3.2],
-# ...                         ["Oslo", 22.4, 13.3, 3.1],
-# ...                         ["Copenhagen", 24.5, 0.0, 6.7]])
-# df.style.background_gradient(
 
-# )
-```
+
+    5000
+
+
 
 
 ```python
@@ -253,138 +138,138 @@ df_simul.iloc[df_simul.iloc[:,1:].idxmax()]
       <th>turn_7</th>
       <th>turn_8</th>
       <th>...</th>
-      <th>turn_9990</th>
-      <th>turn_9991</th>
-      <th>turn_9992</th>
-      <th>turn_9993</th>
-      <th>turn_9994</th>
-      <th>turn_9995</th>
-      <th>turn_9996</th>
-      <th>turn_9997</th>
-      <th>turn_9998</th>
-      <th>turn_9999</th>
+      <th>turn_4990</th>
+      <th>turn_4991</th>
+      <th>turn_4992</th>
+      <th>turn_4993</th>
+      <th>turn_4994</th>
+      <th>turn_4995</th>
+      <th>turn_4996</th>
+      <th>turn_4997</th>
+      <th>turn_4998</th>
+      <th>turn_4999</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>77</th>
-      <td>78</td>
-      <td>100</td>
-      <td>70</td>
-      <td>66</td>
-      <td>48</td>
-      <td>94</td>
+      <th>218</th>
+      <td>219</td>
+      <td>600</td>
+      <td>257</td>
+      <td>88</td>
+      <td>406</td>
+      <td>422</td>
+      <td>275</td>
+      <td>283</td>
+      <td>456</td>
+      <td>566</td>
+      <td>...</td>
+      <td>402</td>
+      <td>216</td>
+      <td>401</td>
+      <td>41</td>
+      <td>563</td>
+      <td>25</td>
+      <td>359</td>
       <td>36</td>
-      <td>52</td>
-      <td>93</td>
-      <td>58</td>
-      <td>...</td>
-      <td>82</td>
-      <td>26</td>
-      <td>83</td>
-      <td>78</td>
-      <td>74</td>
-      <td>98</td>
-      <td>52</td>
-      <td>84</td>
-      <td>4</td>
-      <td>72</td>
+      <td>537</td>
+      <td>482</td>
     </tr>
     <tr>
-      <th>74</th>
-      <td>75</td>
-      <td>38</td>
-      <td>100</td>
-      <td>64</td>
-      <td>31</td>
-      <td>30</td>
-      <td>66</td>
-      <td>87</td>
-      <td>66</td>
-      <td>9</td>
+      <th>335</th>
+      <td>336</td>
+      <td>350</td>
+      <td>600</td>
+      <td>400</td>
+      <td>593</td>
+      <td>286</td>
+      <td>288</td>
+      <td>501</td>
+      <td>515</td>
+      <td>230</td>
       <td>...</td>
-      <td>98</td>
-      <td>12</td>
-      <td>60</td>
-      <td>7</td>
-      <td>38</td>
-      <td>73</td>
-      <td>1</td>
-      <td>1</td>
-      <td>55</td>
-      <td>45</td>
-    </tr>
-    <tr>
-      <th>96</th>
-      <td>97</td>
-      <td>58</td>
-      <td>40</td>
-      <td>100</td>
-      <td>41</td>
-      <td>92</td>
-      <td>60</td>
-      <td>92</td>
-      <td>32</td>
-      <td>24</td>
-      <td>...</td>
-      <td>79</td>
-      <td>49</td>
-      <td>32</td>
-      <td>17</td>
-      <td>96</td>
-      <td>1</td>
-      <td>36</td>
-      <td>78</td>
-      <td>56</td>
-      <td>84</td>
-    </tr>
-    <tr>
-      <th>78</th>
-      <td>79</td>
-      <td>94</td>
-      <td>66</td>
-      <td>92</td>
-      <td>100</td>
-      <td>73</td>
-      <td>49</td>
-      <td>7</td>
-      <td>65</td>
-      <td>16</td>
-      <td>...</td>
-      <td>45</td>
-      <td>19</td>
-      <td>58</td>
-      <td>73</td>
-      <td>86</td>
-      <td>41</td>
-      <td>41</td>
-      <td>19</td>
-      <td>76</td>
-      <td>8</td>
-    </tr>
-    <tr>
-      <th>42</th>
-      <td>43</td>
-      <td>1</td>
-      <td>45</td>
-      <td>87</td>
-      <td>22</td>
-      <td>100</td>
-      <td>64</td>
+      <td>441</td>
+      <td>257</td>
       <td>33</td>
-      <td>12</td>
-      <td>57</td>
-      <td>...</td>
-      <td>36</td>
-      <td>76</td>
-      <td>99</td>
-      <td>19</td>
+      <td>52</td>
+      <td>69</td>
+      <td>433</td>
+      <td>304</td>
+      <td>390</td>
+      <td>251</td>
+      <td>474</td>
+    </tr>
+    <tr>
+      <th>246</th>
+      <td>247</td>
+      <td>275</td>
+      <td>54</td>
+      <td>600</td>
       <td>83</td>
-      <td>28</td>
-      <td>96</td>
-      <td>71</td>
-      <td>34</td>
-      <td>96</td>
+      <td>275</td>
+      <td>80</td>
+      <td>300</td>
+      <td>19</td>
+      <td>119</td>
+      <td>...</td>
+      <td>229</td>
+      <td>1</td>
+      <td>80</td>
+      <td>64</td>
+      <td>202</td>
+      <td>163</td>
+      <td>74</td>
+      <td>245</td>
+      <td>21</td>
+      <td>419</td>
+    </tr>
+    <tr>
+      <th>559</th>
+      <td>560</td>
+      <td>382</td>
+      <td>280</td>
+      <td>271</td>
+      <td>600</td>
+      <td>463</td>
+      <td>123</td>
+      <td>508</td>
+      <td>156</td>
+      <td>296</td>
+      <td>...</td>
+      <td>535</td>
+      <td>528</td>
+      <td>402</td>
+      <td>394</td>
+      <td>198</td>
+      <td>46</td>
+      <td>503</td>
+      <td>530</td>
+      <td>141</td>
+      <td>370</td>
+    </tr>
+    <tr>
+      <th>413</th>
+      <td>414</td>
+      <td>553</td>
+      <td>346</td>
+      <td>368</td>
+      <td>425</td>
+      <td>600</td>
+      <td>154</td>
+      <td>423</td>
+      <td>478</td>
+      <td>290</td>
+      <td>...</td>
+      <td>582</td>
+      <td>450</td>
+      <td>563</td>
+      <td>497</td>
+      <td>192</td>
+      <td>305</td>
+      <td>136</td>
+      <td>600</td>
+      <td>527</td>
+      <td>583</td>
     </tr>
     <tr>
       <th>...</th>
@@ -411,160 +296,285 @@ df_simul.iloc[df_simul.iloc[:,1:].idxmax()]
       <td>...</td>
     </tr>
     <tr>
-      <th>95</th>
-      <td>96</td>
-      <td>64</td>
-      <td>85</td>
-      <td>7</td>
-      <td>37</td>
-      <td>2</td>
-      <td>39</td>
-      <td>11</td>
-      <td>7</td>
-      <td>13</td>
+      <th>460</th>
+      <td>461</td>
+      <td>174</td>
+      <td>206</td>
+      <td>139</td>
+      <td>140</td>
+      <td>107</td>
+      <td>142</td>
+      <td>114</td>
+      <td>340</td>
+      <td>342</td>
       <td>...</td>
-      <td>39</td>
-      <td>32</td>
-      <td>41</td>
-      <td>22</td>
-      <td>25</td>
-      <td>100</td>
-      <td>21</td>
-      <td>86</td>
-      <td>66</td>
-      <td>90</td>
-    </tr>
-    <tr>
-      <th>61</th>
-      <td>62</td>
-      <td>62</td>
+      <td>309</td>
+      <td>219</td>
+      <td>383</td>
+      <td>350</td>
       <td>30</td>
-      <td>22</td>
-      <td>5</td>
-      <td>85</td>
-      <td>84</td>
-      <td>89</td>
-      <td>100</td>
-      <td>85</td>
-      <td>...</td>
-      <td>35</td>
-      <td>56</td>
-      <td>38</td>
-      <td>92</td>
-      <td>84</td>
-      <td>25</td>
-      <td>100</td>
-      <td>98</td>
-      <td>77</td>
-      <td>22</td>
+      <td>600</td>
+      <td>4</td>
+      <td>127</td>
+      <td>226</td>
+      <td>161</td>
     </tr>
     <tr>
-      <th>48</th>
-      <td>49</td>
-      <td>76</td>
-      <td>33</td>
+      <th>599</th>
+      <td>600</td>
+      <td>98</td>
+      <td>574</td>
+      <td>154</td>
+      <td>468</td>
+      <td>486</td>
+      <td>60</td>
+      <td>294</td>
+      <td>330</td>
+      <td>236</td>
+      <td>...</td>
+      <td>256</td>
+      <td>410</td>
+      <td>540</td>
+      <td>62</td>
+      <td>548</td>
+      <td>108</td>
+      <td>600</td>
       <td>54</td>
-      <td>87</td>
-      <td>18</td>
-      <td>38</td>
-      <td>50</td>
-      <td>74</td>
+      <td>168</td>
+      <td>554</td>
+    </tr>
+    <tr>
+      <th>413</th>
+      <td>414</td>
+      <td>553</td>
+      <td>346</td>
+      <td>368</td>
+      <td>425</td>
+      <td>600</td>
+      <td>154</td>
+      <td>423</td>
+      <td>478</td>
+      <td>290</td>
+      <td>...</td>
+      <td>582</td>
+      <td>450</td>
+      <td>563</td>
+      <td>497</td>
+      <td>192</td>
+      <td>305</td>
+      <td>136</td>
+      <td>600</td>
+      <td>527</td>
+      <td>583</td>
+    </tr>
+    <tr>
+      <th>389</th>
+      <td>390</td>
+      <td>272</td>
+      <td>353</td>
+      <td>342</td>
+      <td>463</td>
+      <td>117</td>
+      <td>91</td>
+      <td>563</td>
+      <td>147</td>
+      <td>405</td>
+      <td>...</td>
+      <td>116</td>
+      <td>46</td>
+      <td>385</td>
+      <td>427</td>
+      <td>224</td>
+      <td>70</td>
+      <td>97</td>
+      <td>373</td>
+      <td>600</td>
+      <td>466</td>
+    </tr>
+    <tr>
+      <th>484</th>
+      <td>485</td>
+      <td>313</td>
+      <td>127</td>
+      <td>98</td>
+      <td>387</td>
+      <td>573</td>
+      <td>129</td>
       <td>71</td>
+      <td>42</td>
+      <td>451</td>
       <td>...</td>
-      <td>57</td>
-      <td>96</td>
-      <td>84</td>
-      <td>6</td>
-      <td>78</td>
-      <td>59</td>
-      <td>28</td>
-      <td>100</td>
-      <td>99</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>59</th>
-      <td>60</td>
-      <td>88</td>
-      <td>67</td>
-      <td>50</td>
-      <td>44</td>
-      <td>76</td>
-      <td>98</td>
-      <td>46</td>
-      <td>24</td>
-      <td>75</td>
-      <td>...</td>
-      <td>54</td>
-      <td>67</td>
-      <td>55</td>
-      <td>39</td>
-      <td>13</td>
-      <td>68</td>
-      <td>74</td>
-      <td>50</td>
-      <td>100</td>
-      <td>5</td>
-    </tr>
-    <tr>
-      <th>38</th>
-      <td>39</td>
-      <td>63</td>
-      <td>19</td>
-      <td>60</td>
-      <td>79</td>
-      <td>33</td>
-      <td>82</td>
-      <td>64</td>
-      <td>31</td>
-      <td>55</td>
-      <td>...</td>
-      <td>60</td>
-      <td>11</td>
-      <td>96</td>
-      <td>34</td>
-      <td>59</td>
-      <td>57</td>
-      <td>46</td>
-      <td>16</td>
-      <td>84</td>
-      <td>100</td>
+      <td>122</td>
+      <td>513</td>
+      <td>144</td>
+      <td>504</td>
+      <td>210</td>
+      <td>355</td>
+      <td>154</td>
+      <td>578</td>
+      <td>190</td>
+      <td>600</td>
     </tr>
   </tbody>
 </table>
-<p>10000 rows × 10001 columns</p>
+<p>5000 rows × 5001 columns</p>
 </div>
 
 
 
 
 ```python
-# 统计每个ID成为最后一个被淘汰的次数
-last_killed = df_simul.iloc[:, 1:].idxmax()
-last_killed_counts = {}
-for i in range(1, len(df_simul) + 1):
-    last_killed_counts[i] = 0
-# print(last_killed_counts.keys())
-for i in df_simul.loc[df_simul.iloc[:, 1:].idxmax()]['id']:
-    last_killed_counts[i] += 1
-last_killed_counts = pd.DataFrame({
-    'id': last_killed_counts.keys(),
-    'win_count': last_killed_counts.values()
-})
+last_killed_counts = pd.DataFrame(df_simul.iloc[:, 1:].idxmax().values +
+                                  np.array(range(1, 1 +
+                                                 num_people))).value_counts()
+# last_killed_counts.index = list(range(1, num_people + 1))
+# last_killed_counts.index.name = 'id'
+# last_killed_counts.reset_index()
+last_killed_counts
+```
 
-last_killed_counts.plot(x='id', y='win_count', figsize=(10, 5))
+
+    ---------------------------------------------------------------------------
+
+    ValueError                                Traceback (most recent call last)
+
+    Cell In[221], line 1
+    ----> 1 last_killed_counts = pd.DataFrame(df_simul.iloc[:, 1:].idxmax().values +
+          2                                   np.array(range(1, 1 +
+          3                                                  num_people))).value_counts()
+          4 # last_killed_counts.index = list(range(1, num_people + 1))
+          5 # last_killed_counts.index.name = 'id'
+          6 # last_killed_counts.reset_index()
+          7 last_killed_counts
+
+
+    ValueError: operands could not be broadcast together with shapes (5000,) (600,) 
+
+
+
+```python
+df_simul.iloc[df_simul.iloc[:, 1:].idxmax()]['id'].values
 ```
 
 
 
 
-    <AxesSubplot:xlabel='id'>
+    array([219, 336, 247, ..., 414, 390, 485])
+
+
+
+
+```python
+
+```
+
+
+```python
+a = df_simul.iloc[:, 1:].idxmax().values + 1
+b = np.array(range(1, 1 + num_people))
+# pd.DataFrame(np.concatenate((a, b))).value_counts().sort_index().values - 1
+
+last_killed_counts = pd.DataFrame({
+    'id':
+    b,
+    'win_count':
+    pd.DataFrame(np.concatenate((a, b))).value_counts().sort_index().values - 1
+})
+last_killed_counts.plot(x='id', y='win_count', figsize=(12, 5))
+last_killed_counts
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>win_count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>595</th>
+      <td>596</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th>596</th>
+      <td>597</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <th>597</th>
+      <td>598</td>
+      <td>14</td>
+    </tr>
+    <tr>
+      <th>598</th>
+      <td>599</td>
+      <td>19</td>
+    </tr>
+    <tr>
+      <th>599</th>
+      <td>600</td>
+      <td>13</td>
+    </tr>
+  </tbody>
+</table>
+<p>600 rows × 2 columns</p>
+</div>
 
 
 
 
     
-![png](random_kill_final_files/random_kill_final_5_1.png)
+![png](random_kill_final_files/random_kill_final_7_1.png)
     
 
 
@@ -600,29 +610,29 @@ last_killed_counts.sort_values('win_count',ascending=False)
   </thead>
   <tbody>
     <tr>
-      <th>94</th>
-      <td>95</td>
-      <td>207</td>
+      <th>555</th>
+      <td>556</td>
+      <td>27</td>
     </tr>
     <tr>
-      <th>97</th>
-      <td>98</td>
-      <td>203</td>
+      <th>451</th>
+      <td>452</td>
+      <td>25</td>
     </tr>
     <tr>
-      <th>95</th>
-      <td>96</td>
-      <td>201</td>
+      <th>542</th>
+      <td>543</td>
+      <td>24</td>
     </tr>
     <tr>
-      <th>99</th>
-      <td>100</td>
-      <td>200</td>
+      <th>572</th>
+      <td>573</td>
+      <td>23</td>
     </tr>
     <tr>
-      <th>96</th>
-      <td>97</td>
-      <td>193</td>
+      <th>495</th>
+      <td>496</td>
+      <td>22</td>
     </tr>
     <tr>
       <th>...</th>
@@ -630,24 +640,24 @@ last_killed_counts.sort_values('win_count',ascending=False)
       <td>...</td>
     </tr>
     <tr>
-      <th>3</th>
-      <td>4</td>
-      <td>9</td>
+      <th>37</th>
+      <td>38</td>
+      <td>0</td>
     </tr>
     <tr>
-      <th>5</th>
-      <td>6</td>
-      <td>7</td>
+      <th>36</th>
+      <td>37</td>
+      <td>0</td>
     </tr>
     <tr>
-      <th>2</th>
-      <td>3</td>
-      <td>3</td>
+      <th>32</th>
+      <td>33</td>
+      <td>0</td>
     </tr>
     <tr>
-      <th>1</th>
-      <td>2</td>
-      <td>3</td>
+      <th>31</th>
+      <td>32</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>0</th>
@@ -656,7 +666,7 @@ last_killed_counts.sort_values('win_count',ascending=False)
     </tr>
   </tbody>
 </table>
-<p>100 rows × 2 columns</p>
+<p>600 rows × 2 columns</p>
 </div>
 
 
@@ -697,27 +707,27 @@ df_simul[['id', 'average_alive_turns']].sort_values(by='average_alive_turns',
     <tr>
       <th>1</th>
       <td>2</td>
-      <td>56.265373</td>
+      <td>331.908818</td>
     </tr>
     <tr>
       <th>3</th>
       <td>4</td>
-      <td>54.821618</td>
+      <td>324.174965</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>12</td>
+      <td>316.400320</td>
     </tr>
     <tr>
       <th>5</th>
       <td>6</td>
-      <td>54.246975</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>10</td>
-      <td>53.086491</td>
+      <td>316.315937</td>
     </tr>
     <tr>
       <th>7</th>
       <td>8</td>
-      <td>52.889311</td>
+      <td>313.761648</td>
     </tr>
     <tr>
       <th>...</th>
@@ -727,31 +737,31 @@ df_simul[['id', 'average_alive_turns']].sort_values(by='average_alive_turns',
     <tr>
       <th>8</th>
       <td>9</td>
-      <td>47.849215</td>
+      <td>285.386123</td>
     </tr>
     <tr>
       <th>6</th>
       <td>7</td>
-      <td>46.754225</td>
+      <td>278.004199</td>
     </tr>
     <tr>
       <th>4</th>
       <td>5</td>
-      <td>45.764524</td>
+      <td>266.746251</td>
     </tr>
     <tr>
       <th>2</th>
       <td>3</td>
-      <td>42.856214</td>
+      <td>249.878624</td>
     </tr>
     <tr>
       <th>0</th>
       <td>1</td>
-      <td>33.537446</td>
+      <td>198.270346</td>
     </tr>
   </tbody>
 </table>
-<p>100 rows × 2 columns</p>
+<p>600 rows × 2 columns</p>
 </div>
 
 
@@ -770,7 +780,7 @@ df_simul[['id', 'average_alive_turns']].plot(x='id',y='average_alive_turns',figs
 
 
     
-![png](random_kill_final_files/random_kill_final_8_1.png)
+![png](random_kill_final_files/random_kill_final_10_1.png)
     
 
 
@@ -780,7 +790,7 @@ df_simul[['id', 'average_alive_turns']].plot(x='id',y='average_alive_turns',figs
 ```
 
     [NbConvertApp] Converting notebook random_kill_final.ipynb to html
-    [NbConvertApp] Writing 383929 bytes to random_kill_final.html
+    [NbConvertApp] Writing 443576 bytes to random_kill_final.html
 
 
 
