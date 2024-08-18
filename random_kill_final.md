@@ -31,6 +31,23 @@
 
 
 ```python
+z = 11
+k = (z - z % 2) // 2
+1 + (z - z % 2) // 2
+import random
+
+random.randrange(1, z + 1, 2)
+```
+
+
+
+
+    3
+
+
+
+
+```python
 import pandas as pd
 import numpy as np
 import random
@@ -46,15 +63,17 @@ warnings.filterwarnings('ignore')
 
 from tqdm import tqdm_notebook
 
+# def random_kill(n):
+#     # 生成一个随机的奇数，范围从0到n-1
+#     return random.choice([i for i in range(n) if i % 2 == 0])
 
-def random_kill(n):
-    # 生成一个随机的奇数，范围从0到n-1
-    return random.choice([i for i in range(n) if i % 2 == 0])
+# def random_odd(n):
+#     return random.randrange(1, n + 1, 2)
 
-
-def random_kill_list(alive_ids):
-    n = len(alive_ids)
-    return alive_ids[random_kill(n)]
+# def random_kill_list(alive_ids):
+#     n = len(alive_ids)
+#     random_odd_idx = random.randrange(1, n + 1, 2)
+#     return alive_ids[random_odd_idx - 1]
 
 
 def run_simulation_numpy(num_people):
@@ -69,15 +88,35 @@ def run_simulation_numpy(num_people):
         if len(alive_ids) == 0:  # 如果没有存活者，提前退出循环
             break
 
-        kill_id = random_kill_list(alive_ids) - 1  # 选择要淘汰的ID
+        random_odd_idx = random.randrange(1, len(alive_ids) + 1, 2)
+        kill_id = alive_ids[random_odd_idx - 1] - 1  # 选择要淘汰的ID
 
         killed_turn[kill_id] = turn + 1  # 记录淘汰回合
 
     return killed_turn
 
+
+# def run_simulation_numpy(num_people):
+#     ids = np.arange(1, num_people + 1)
+#     killed_turn = np.full(num_people, -1)
+
+#     for turn in range(num_people):
+#         alive_mask = killed_turn == -1
+#         alive_ids = ids[alive_mask]
+
+#         if alive_ids.size == 0:
+#             break
+
+#         kill_index = np.random.choice(np.arange(
+#             len(alive_ids))[::2])  # 随机选择奇数索引
+#         killed_turn[alive_mask][kill_index] = turn + 1
+
+#     return killed_turn
+
+
 #
 num_people = 600
-N = 5000
+N = 35000
 df_simul = pd.DataFrame({"id": range(1, 1 + num_people)})
 for i in tqdm_notebook(range(N)):
     result_df = run_simulation_numpy(num_people)
@@ -86,386 +125,22 @@ for i in tqdm_notebook(range(N)):
 ```
 
 
-      0%|          | 0/5000 [00:00<?, ?it/s]
+      0%|          | 0/35000 [00:00<?, ?it/s]
 
 
 
 ```python
-df_simul.min().iloc[:-1].sum()
+# df_simul.to_csv("simul.csv", index=False)
 ```
 
 
-
-
-    5000
-
-
-
-
 ```python
-df_simul.iloc[df_simul.iloc[:,1:].idxmax()]
+# df_simul.min().iloc[:-1].sum()
 ```
 
 
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>id</th>
-      <th>turn_0</th>
-      <th>turn_1</th>
-      <th>turn_2</th>
-      <th>turn_3</th>
-      <th>turn_4</th>
-      <th>turn_5</th>
-      <th>turn_6</th>
-      <th>turn_7</th>
-      <th>turn_8</th>
-      <th>...</th>
-      <th>turn_4990</th>
-      <th>turn_4991</th>
-      <th>turn_4992</th>
-      <th>turn_4993</th>
-      <th>turn_4994</th>
-      <th>turn_4995</th>
-      <th>turn_4996</th>
-      <th>turn_4997</th>
-      <th>turn_4998</th>
-      <th>turn_4999</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>218</th>
-      <td>219</td>
-      <td>600</td>
-      <td>257</td>
-      <td>88</td>
-      <td>406</td>
-      <td>422</td>
-      <td>275</td>
-      <td>283</td>
-      <td>456</td>
-      <td>566</td>
-      <td>...</td>
-      <td>402</td>
-      <td>216</td>
-      <td>401</td>
-      <td>41</td>
-      <td>563</td>
-      <td>25</td>
-      <td>359</td>
-      <td>36</td>
-      <td>537</td>
-      <td>482</td>
-    </tr>
-    <tr>
-      <th>335</th>
-      <td>336</td>
-      <td>350</td>
-      <td>600</td>
-      <td>400</td>
-      <td>593</td>
-      <td>286</td>
-      <td>288</td>
-      <td>501</td>
-      <td>515</td>
-      <td>230</td>
-      <td>...</td>
-      <td>441</td>
-      <td>257</td>
-      <td>33</td>
-      <td>52</td>
-      <td>69</td>
-      <td>433</td>
-      <td>304</td>
-      <td>390</td>
-      <td>251</td>
-      <td>474</td>
-    </tr>
-    <tr>
-      <th>246</th>
-      <td>247</td>
-      <td>275</td>
-      <td>54</td>
-      <td>600</td>
-      <td>83</td>
-      <td>275</td>
-      <td>80</td>
-      <td>300</td>
-      <td>19</td>
-      <td>119</td>
-      <td>...</td>
-      <td>229</td>
-      <td>1</td>
-      <td>80</td>
-      <td>64</td>
-      <td>202</td>
-      <td>163</td>
-      <td>74</td>
-      <td>245</td>
-      <td>21</td>
-      <td>419</td>
-    </tr>
-    <tr>
-      <th>559</th>
-      <td>560</td>
-      <td>382</td>
-      <td>280</td>
-      <td>271</td>
-      <td>600</td>
-      <td>463</td>
-      <td>123</td>
-      <td>508</td>
-      <td>156</td>
-      <td>296</td>
-      <td>...</td>
-      <td>535</td>
-      <td>528</td>
-      <td>402</td>
-      <td>394</td>
-      <td>198</td>
-      <td>46</td>
-      <td>503</td>
-      <td>530</td>
-      <td>141</td>
-      <td>370</td>
-    </tr>
-    <tr>
-      <th>413</th>
-      <td>414</td>
-      <td>553</td>
-      <td>346</td>
-      <td>368</td>
-      <td>425</td>
-      <td>600</td>
-      <td>154</td>
-      <td>423</td>
-      <td>478</td>
-      <td>290</td>
-      <td>...</td>
-      <td>582</td>
-      <td>450</td>
-      <td>563</td>
-      <td>497</td>
-      <td>192</td>
-      <td>305</td>
-      <td>136</td>
-      <td>600</td>
-      <td>527</td>
-      <td>583</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>460</th>
-      <td>461</td>
-      <td>174</td>
-      <td>206</td>
-      <td>139</td>
-      <td>140</td>
-      <td>107</td>
-      <td>142</td>
-      <td>114</td>
-      <td>340</td>
-      <td>342</td>
-      <td>...</td>
-      <td>309</td>
-      <td>219</td>
-      <td>383</td>
-      <td>350</td>
-      <td>30</td>
-      <td>600</td>
-      <td>4</td>
-      <td>127</td>
-      <td>226</td>
-      <td>161</td>
-    </tr>
-    <tr>
-      <th>599</th>
-      <td>600</td>
-      <td>98</td>
-      <td>574</td>
-      <td>154</td>
-      <td>468</td>
-      <td>486</td>
-      <td>60</td>
-      <td>294</td>
-      <td>330</td>
-      <td>236</td>
-      <td>...</td>
-      <td>256</td>
-      <td>410</td>
-      <td>540</td>
-      <td>62</td>
-      <td>548</td>
-      <td>108</td>
-      <td>600</td>
-      <td>54</td>
-      <td>168</td>
-      <td>554</td>
-    </tr>
-    <tr>
-      <th>413</th>
-      <td>414</td>
-      <td>553</td>
-      <td>346</td>
-      <td>368</td>
-      <td>425</td>
-      <td>600</td>
-      <td>154</td>
-      <td>423</td>
-      <td>478</td>
-      <td>290</td>
-      <td>...</td>
-      <td>582</td>
-      <td>450</td>
-      <td>563</td>
-      <td>497</td>
-      <td>192</td>
-      <td>305</td>
-      <td>136</td>
-      <td>600</td>
-      <td>527</td>
-      <td>583</td>
-    </tr>
-    <tr>
-      <th>389</th>
-      <td>390</td>
-      <td>272</td>
-      <td>353</td>
-      <td>342</td>
-      <td>463</td>
-      <td>117</td>
-      <td>91</td>
-      <td>563</td>
-      <td>147</td>
-      <td>405</td>
-      <td>...</td>
-      <td>116</td>
-      <td>46</td>
-      <td>385</td>
-      <td>427</td>
-      <td>224</td>
-      <td>70</td>
-      <td>97</td>
-      <td>373</td>
-      <td>600</td>
-      <td>466</td>
-    </tr>
-    <tr>
-      <th>484</th>
-      <td>485</td>
-      <td>313</td>
-      <td>127</td>
-      <td>98</td>
-      <td>387</td>
-      <td>573</td>
-      <td>129</td>
-      <td>71</td>
-      <td>42</td>
-      <td>451</td>
-      <td>...</td>
-      <td>122</td>
-      <td>513</td>
-      <td>144</td>
-      <td>504</td>
-      <td>210</td>
-      <td>355</td>
-      <td>154</td>
-      <td>578</td>
-      <td>190</td>
-      <td>600</td>
-    </tr>
-  </tbody>
-</table>
-<p>5000 rows × 5001 columns</p>
-</div>
-
-
-
-
 ```python
-last_killed_counts = pd.DataFrame(df_simul.iloc[:, 1:].idxmax().values +
-                                  np.array(range(1, 1 +
-                                                 num_people))).value_counts()
-# last_killed_counts.index = list(range(1, num_people + 1))
-# last_killed_counts.index.name = 'id'
-# last_killed_counts.reset_index()
-last_killed_counts
-```
-
-
-    ---------------------------------------------------------------------------
-
-    ValueError                                Traceback (most recent call last)
-
-    Cell In[221], line 1
-    ----> 1 last_killed_counts = pd.DataFrame(df_simul.iloc[:, 1:].idxmax().values +
-          2                                   np.array(range(1, 1 +
-          3                                                  num_people))).value_counts()
-          4 # last_killed_counts.index = list(range(1, num_people + 1))
-          5 # last_killed_counts.index.name = 'id'
-          6 # last_killed_counts.reset_index()
-          7 last_killed_counts
-
-
-    ValueError: operands could not be broadcast together with shapes (5000,) (600,) 
-
-
-
-```python
-df_simul.iloc[df_simul.iloc[:, 1:].idxmax()]['id'].values
-```
-
-
-
-
-    array([219, 336, 247, ..., 414, 390, 485])
-
-
-
-
-```python
-
+# df_simul.iloc[df_simul.iloc[:,1:].idxmax()]
 ```
 
 
@@ -528,12 +203,12 @@ last_killed_counts
     <tr>
       <th>3</th>
       <td>4</td>
-      <td>0</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>4</th>
       <td>5</td>
-      <td>0</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>...</th>
@@ -543,27 +218,27 @@ last_killed_counts
     <tr>
       <th>595</th>
       <td>596</td>
-      <td>21</td>
+      <td>129</td>
     </tr>
     <tr>
       <th>596</th>
       <td>597</td>
-      <td>12</td>
+      <td>132</td>
     </tr>
     <tr>
       <th>597</th>
       <td>598</td>
-      <td>14</td>
+      <td>112</td>
     </tr>
     <tr>
       <th>598</th>
       <td>599</td>
-      <td>19</td>
+      <td>93</td>
     </tr>
     <tr>
       <th>599</th>
       <td>600</td>
-      <td>13</td>
+      <td>122</td>
     </tr>
   </tbody>
 </table>
@@ -574,7 +249,7 @@ last_killed_counts
 
 
     
-![png](random_kill_final_files/random_kill_final_7_1.png)
+![png](random_kill_final_files/random_kill_final_6_1.png)
     
 
 
@@ -610,29 +285,29 @@ last_killed_counts.sort_values('win_count',ascending=False)
   </thead>
   <tbody>
     <tr>
-      <th>555</th>
-      <td>556</td>
-      <td>27</td>
+      <th>590</th>
+      <td>591</td>
+      <td>134</td>
     </tr>
     <tr>
-      <th>451</th>
-      <td>452</td>
-      <td>25</td>
+      <th>596</th>
+      <td>597</td>
+      <td>132</td>
     </tr>
     <tr>
-      <th>542</th>
-      <td>543</td>
-      <td>24</td>
+      <th>586</th>
+      <td>587</td>
+      <td>131</td>
     </tr>
     <tr>
-      <th>572</th>
-      <td>573</td>
-      <td>23</td>
+      <th>575</th>
+      <td>576</td>
+      <td>130</td>
     </tr>
     <tr>
-      <th>495</th>
-      <td>496</td>
-      <td>22</td>
+      <th>595</th>
+      <td>596</td>
+      <td>129</td>
     </tr>
     <tr>
       <th>...</th>
@@ -640,23 +315,23 @@ last_killed_counts.sort_values('win_count',ascending=False)
       <td>...</td>
     </tr>
     <tr>
-      <th>37</th>
-      <td>38</td>
+      <th>2</th>
+      <td>3</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>36</th>
-      <td>37</td>
+      <th>1</th>
+      <td>2</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>32</th>
-      <td>33</td>
+      <th>5</th>
+      <td>6</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>31</th>
-      <td>32</td>
+      <th>6</th>
+      <td>7</td>
       <td>0</td>
     </tr>
     <tr>
@@ -707,27 +382,27 @@ df_simul[['id', 'average_alive_turns']].sort_values(by='average_alive_turns',
     <tr>
       <th>1</th>
       <td>2</td>
-      <td>331.908818</td>
+      <td>334.467130</td>
     </tr>
     <tr>
       <th>3</th>
       <td>4</td>
-      <td>324.174965</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>12</td>
-      <td>316.400320</td>
+      <td>322.646724</td>
     </tr>
     <tr>
       <th>5</th>
       <td>6</td>
-      <td>316.315937</td>
+      <td>317.611154</td>
     </tr>
     <tr>
       <th>7</th>
       <td>8</td>
-      <td>313.761648</td>
+      <td>314.787520</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>12</td>
+      <td>311.955944</td>
     </tr>
     <tr>
       <th>...</th>
@@ -737,27 +412,27 @@ df_simul[['id', 'average_alive_turns']].sort_values(by='average_alive_turns',
     <tr>
       <th>8</th>
       <td>9</td>
-      <td>285.386123</td>
+      <td>282.373104</td>
     </tr>
     <tr>
       <th>6</th>
       <td>7</td>
-      <td>278.004199</td>
+      <td>277.798920</td>
     </tr>
     <tr>
       <th>4</th>
       <td>5</td>
-      <td>266.746251</td>
+      <td>270.733722</td>
     </tr>
     <tr>
       <th>2</th>
       <td>3</td>
-      <td>249.878624</td>
+      <td>254.239850</td>
     </tr>
     <tr>
       <th>0</th>
       <td>1</td>
-      <td>198.270346</td>
+      <td>200.279935</td>
     </tr>
   </tbody>
 </table>
@@ -768,7 +443,7 @@ df_simul[['id', 'average_alive_turns']].sort_values(by='average_alive_turns',
 
 
 ```python
-df_simul[['id', 'average_alive_turns']].plot(x='id',y='average_alive_turns',figsize=(10,5))
+df_simul[['id', 'average_alive_turns']].plot(x='id',y='average_alive_turns',figsize=(12,5))
 ```
 
 
@@ -780,7 +455,7 @@ df_simul[['id', 'average_alive_turns']].plot(x='id',y='average_alive_turns',figs
 
 
     
-![png](random_kill_final_files/random_kill_final_10_1.png)
+![png](random_kill_final_files/random_kill_final_9_1.png)
     
 
 
@@ -790,7 +465,7 @@ df_simul[['id', 'average_alive_turns']].plot(x='id',y='average_alive_turns',figs
 ```
 
     [NbConvertApp] Converting notebook random_kill_final.ipynb to html
-    [NbConvertApp] Writing 443576 bytes to random_kill_final.html
+    [NbConvertApp] Writing 419462 bytes to random_kill_final.html
 
 
 
